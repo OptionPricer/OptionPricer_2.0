@@ -37,6 +37,8 @@ public class OptionInfoPanel extends JPanel{
         optionLabel = new JLabel();
         String info = style + ": " + right;
         optionLabel.setText(info);
+        optionLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        optionLabel.setVerticalAlignment(java.awt.Label.CENTER);
         optionLabel.setForeground(Color.BLACK);
         this.add(optionLabel);
     }

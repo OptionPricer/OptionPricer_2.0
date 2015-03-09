@@ -20,6 +20,7 @@ public class BlackScholesModel extends Algorithm{
     @Override
     public double[] computeOption(Option o){
         double[] prices=new double[NUMOFDOTS];
+        double temp=o.getVolatility();
         double vBase=o.getVolatility();
         int count= (NUMOFDOTS-1)/2; // count = 5
 
@@ -42,6 +43,7 @@ public class BlackScholesModel extends Algorithm{
                 prices[count+i]=crunchCall(o);
             }
         }
+        o.setVolatility(temp);
         return prices;
     }
 

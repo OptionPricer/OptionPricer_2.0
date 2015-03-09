@@ -2,8 +2,6 @@ package controller;
 
 import com.fathzer.soft.javaluator.DoubleEvaluator;
 import com.fathzer.soft.javaluator.StaticVariableSet;
-import com.fathzer.soft.javaluator.DoubleEvaluator;
-import com.fathzer.soft.javaluator.StaticVariableSet;
 import model.*;
 
 import java.util.ArrayList;
@@ -80,12 +78,39 @@ public class OPS {
         vars.set("o",o);
         vars.set("r",r);
         // Evaluate an expression
-        for(String exp:expressions){
-            results.add(de.evaluate(exp,vars));
-            //test
-            System.out.println(exp+" = "+de.evaluate(exp,vars));
+        try {
+            for (String exp : expressions) {
+                results.add(de.evaluate(exp, vars));
+                //test
+                System.out.println(exp + " = " + de.evaluate(exp, vars));
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getStackTrace());
         }
         return results;
+    }
+    public static void validateFormula(String str) throws Exception{
+        DoubleEvaluator de=new DoubleEvaluator();
+        StaticVariableSet<Double> vars=new StaticVariableSet<>();
+        double s = 0;
+        double k = 0;
+        double t = 0;
+        double o = 0;
+        double r = 0;
+        vars.set("s",s);
+        vars.set("k",k);
+        vars.set("t",t);
+        vars.set("o",o);
+        vars.set("r",r);
+        try {
+            System.out.println(str + " = " + de.evaluate(str, vars));
+        }
+        catch (Exception e){
+            System.out.println("INPUT ERROR: "+e.getMessage());
+            throw e;
+        }
+
     }
     /**
      * A method to calculate option price using all the algorithms that user has chosen.
@@ -94,7 +119,7 @@ public class OPS {
         for(String s:algNames){
             switch (s){
                 case "BinomialTree": {
-                    algList.add(new BinomialTree());
+                    algList.add(new BinomialTree(OPS.theOption, OPS.theOption.getBTnti()));
                     break;
                 }
                 case "BlackScholesModel": {
@@ -102,18 +127,18 @@ public class OPS {
                     break;
                 }
                 case "FiniteDifference": {
-                    algList.add(new FiniteDifference());
+                    algList.add(new FiniteDifference(OPS.theOption.getFDnti(), OPS.theOption.getFDnpi(), OPS.theOption.getFDsmax()));
                     break;
                 }
                 case "SimulationModel": {
-                    algList.add(new SimulationModel());
+                    algList.add(new SimulationModel(OPS.theOption.getSnti(),OPS.theOption.getSnt()));
                     break;
                 }
             }
         }
         for(Algorithm al:algList){
             System.out.println(al.getClass().getName());
-            results.add(al.computeOption(theOption));
+            results.add(al.computeOption(OPS.theOption));
         }
         for(double[] r:results){
             for(double p:r){

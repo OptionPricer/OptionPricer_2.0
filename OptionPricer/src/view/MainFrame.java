@@ -1,10 +1,13 @@
 package view;
 
+import com.fathzer.soft.javaluator.DoubleEvaluator;
+import com.fathzer.soft.javaluator.StaticVariableSet;
 import controller.OPS;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -18,7 +21,7 @@ import javax.swing.WindowConstants;
  *
  */
 public class MainFrame extends JFrame {
-    private final String IMGPATH = "../pictures/cmu_wordmark.jpg";
+    private final String IMGPATH="/pictures/cmu_wordmark.jpg";
     //Constructor, for the option frame
     public MainFrame() {
         initHeadPanel();
@@ -115,6 +118,28 @@ public class MainFrame extends JFrame {
 
     public static void main(String[] args) {
         new MainFrame().setVisible(true);
+//        DoubleEvaluator de=new DoubleEvaluator();
+//        StaticVariableSet<Double> vars=new StaticVariableSet<>();
+//        ArrayList<Double> results=new ArrayList<>();
+//        double s = 0;
+//        double k = 0;
+//        double t = 0;
+//        double o = 0;
+//        double r = 0;
+//        vars.set("s",s);
+//        vars.set("k",k);
+//        vars.set("t",t);
+//        vars.set("o",o);
+//        vars.set("r",r);
+//        // Evaluate an expression
+//        String str="(r-k/r)*t-o/7";
+//        try {
+//            System.out.println(str + " = " + de.evaluate(str, vars));
+//        }
+//        catch (Exception e){
+//            System.out.println("INPUT ERROR: "+e.getMessage());
+//        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

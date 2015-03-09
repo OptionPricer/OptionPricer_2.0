@@ -17,10 +17,10 @@ public class BinomialTree extends Algorithm {
 	private double up;		
 	private double down;		
 	private double upProb	= 0.5;
-        private double downProb = 0.5;
-        private int numIntervals = 0;
-        private Price[][] binomialTree;
-        double binomValue;
+    private double downProb = 0.5;
+    private int numIntervals = 0;
+    private Price[][] binomialTree;
+    double binomValue;
         /**
          * Inner class used by binomial tree valuation method
          */

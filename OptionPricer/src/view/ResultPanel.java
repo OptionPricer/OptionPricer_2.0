@@ -1,5 +1,6 @@
 package view;
 
+import controller.OPS;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,6 +13,35 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import model.Option;
+import model.volatilityGraph;
+import static controller.OPS.results;
+import static controller.OPS.algNames;
+
+import java.awt.Color;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYPointerAnnotation;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.BlockContainer;
+import org.jfree.chart.block.BorderArrangement;
+import org.jfree.chart.block.EmptyBlock;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.CompositeTitle;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.TextAnchor;
 
 /**
  * This class is used to show both the results and diagrams
@@ -34,7 +64,7 @@ public class ResultPanel extends JPanel implements ActionListener{
         
         resultTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Simulation", "50.00", "50.00", "5", "0.10", "0.40", "0.91"},
+                {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
@@ -43,7 +73,19 @@ public class ResultPanel extends JPanel implements ActionListener{
                 "Method", "S0", "K", "T", "r", "σ", "Price"
             }
         ));
-        
+
+        for (int i=0;i<OPS.algList.size();i++) {
+            resultTable.setValueAt(OPS.algNames.get(i),i,0);
+            resultTable.setValueAt(OPS.theOption.getsNought(),i,1);
+            resultTable.setValueAt(OPS.theOption.getStrikeP(),i,2);
+            resultTable.setValueAt(OPS.theOption.getTerm(),i,3);
+            resultTable.setValueAt(OPS.theOption.getRiskFreeRate(),i,4);
+
+            resultTable.setValueAt(OPS.theOption.getVolatility(), i, 5);
+            System.out.println("-----------r:"+OPS.theOption.getVolatility());
+            resultTable.setValueAt(OPS.results.get(i)[5], i, 6);
+        }
+
         restartButton.setText("Restart");
         showGraphButton.setText("Show Graph");
         
@@ -90,7 +132,30 @@ public class ResultPanel extends JPanel implements ActionListener{
     
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SHOW")){
+            int i,j;
+            double[] v = new double[11];//store the 11 values for the volatility
+            double[] op = new double[11];//store the 11 values responded to 11 different volatilities
             
+            double vola = OPS.theOption.getVolatility();//get the volatility of the present option
+            for(i=0;i<=5;i++) //calculate the 11 volatilities
+                v[i] = vola - vola*0.5/5*(5-i);
+            for(i=6;i<11;i++)
+                v[i] = vola + vola*0.5/5*(i-5);
+            
+            int numOfAlgorithm = algNames.size();//get the number of algorithm the user selected.
+            double[][] optionPrice = new double[numOfAlgorithm][11];
+            for(i=0;i<numOfAlgorithm;i++){
+                for(j=0;j<11;j++){
+                    optionPrice[i][j]=results.get(i)[j];
+                }
+            }
+            //algNames.toArray();
+            
+            JFrame.setDefaultLookAndFeelDecorated(true); 
+            volatilityGraph graph = new volatilityGraph("Option Pricer Software",numOfAlgorithm,v,optionPrice);              
+            graph.pack();  
+            RefineryUtilities.centerFrameOnScreen(graph);  
+            graph.setVisible(true); 
         }
         else if(e.getActionCommand().equals("RESTART")){
             new MainFrame();
@@ -103,5 +168,8 @@ public class ResultPanel extends JPanel implements ActionListener{
     private javax.swing.JLabel promptLabel;
     private javax.swing.JTable resultTable;
     private javax.swing.JButton restartButton;
-    private javax.swing.JButton showGraphButton;  
+    private javax.swing.JButton showGraphButton;
+
+    
+    
 }

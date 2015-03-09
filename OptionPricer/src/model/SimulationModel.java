@@ -9,6 +9,10 @@ public class SimulationModel extends Algorithm{
     private int numIntervals;
     private int numTrials;
 
+    public SimulationModel(int numIntervals, int numTrials) {
+        this.numIntervals = numIntervals;
+        this.numTrials = numTrials;
+    }
 
     public int getNumIntervals() {
         return numIntervals;
@@ -39,6 +43,7 @@ public class SimulationModel extends Algorithm{
      */
     @Override
     public double[] computeOption(Option o){
+        double temp=o.getVolatility();
         double[] prices=new double[NUMOFDOTS];
         double vBase=o.getVolatility();
         int count= (NUMOFDOTS-1)/2; // count = 5
@@ -62,6 +67,7 @@ public class SimulationModel extends Algorithm{
                 prices[count+i]=crunchCall(o);
             }
         }
+        o.setVolatility(temp);
         return prices;
     }
 

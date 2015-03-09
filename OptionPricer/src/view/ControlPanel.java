@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import model.OptionRight;
 import model.OptionStyle;
@@ -38,7 +37,6 @@ public class ControlPanel extends JPanel implements ActionListener {
         tempcp = this;
 
         algorithmsPanel = new JPanel();
-//        algorithmsPanel = new JScrollPane();
         parametersPanel = new JPanel();
         choicePanel = new JPanel();
            
@@ -61,9 +59,9 @@ public class ControlPanel extends JPanel implements ActionListener {
 
         initialComponents();
         this.setBackground(new java.awt.Color(150, 0, 0));
-        this.setMaximumSize(new java.awt.Dimension(600, 350));
-        this.setMinimumSize(new java.awt.Dimension(600, 350));
-        this.setPreferredSize(new java.awt.Dimension(600, 350));
+        this.setMaximumSize(new java.awt.Dimension(600, 450));
+        this.setMinimumSize(new java.awt.Dimension(600, 450));
+        this.setPreferredSize(new java.awt.Dimension(600, 450));
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -71,7 +69,20 @@ public class ControlPanel extends JPanel implements ActionListener {
         //logic for "ADD" button
         if (e.getActionCommand().equals("ADD")) {  
             //set the file name of certain algorithm
-            initializeCusAlgo();
+            String newFormula;
+            newFormula = customizedAlgorithmTextField.getText();
+            try{
+                OPS.validateFormula(newFormula);
+                // Do something (like a popup) to tell user the formula has been added.
+            }
+            catch (Exception exception)
+            {
+                String errMsg="INPUT ERROR! "+ exception.getMessage();// such as "** is not number", "Parentheses mismatched"
+                System.out.println(errMsg);
+                // Do something (like a popup) to display the error message.
+            }
+
+//            initializeCusAlgo();
 //            OPS.evalExpression(cusAlgoList);
         }                
         
@@ -83,18 +94,21 @@ public class ControlPanel extends JPanel implements ActionListener {
                     || oTextField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(parametersPanel, "some parameter(s) is empty",
                         "lack of parameter", JOptionPane.INFORMATION_MESSAGE);
-            } //pop out a dialogue to remind non-numeric errors
+            }
+            //pop out a dialogue to remind non-numeric errors
             else if (!isNumeric(sTextField.getText()) || !isNumeric(kTextField.getText())
                     || !isNumeric(tTextField.getText()) || !isNumeric(rTextField.getText())
                     || !isNumeric(oTextField.getText())) {
                 JOptionPane.showMessageDialog(parametersPanel, "some parameter(s) is not a number",
                         "invalid parameter", JOptionPane.INFORMATION_MESSAGE);
-            } //pop out a dialogue to remind no algorithm errors
+            } 
+            //pop out a dialogue to remind no algorithm errors
             else if (!bsCheckBox.isSelected() && !btCheckBox.isSelected()
                     && !niCheckBox.isSelected() && !sCheckBox.isSelected()) {
                 JOptionPane.showMessageDialog(parametersPanel, "At least choose one algorithm",
                         "lack of algorithm", JOptionPane.INFORMATION_MESSAGE);
-            } //once those inputs are in correct format
+            } 
+            //once those inputs are in correct format
             else {
                 double stf = Double.parseDouble(sTextField.getText());
                 double ktf = Double.parseDouble(kTextField.getText());
@@ -205,6 +219,8 @@ public class ControlPanel extends JPanel implements ActionListener {
                 System.out.println("Simulation:" + OPS.theOption.getSnt() + ", "
                         + OPS.theOption.getSnti());
 
+                OPS.compute();
+                System.out.println(OPS.results.size());
                 new MainFrame("RESULT");
                 mainframe.dispose();        //dispose the original frame
             }
@@ -249,7 +265,7 @@ public class ControlPanel extends JPanel implements ActionListener {
             return false;
         }
     }
-
+    
     //to initialize the customer algorithms
     private void initializeCusAlgo(){  
         //set the file name of certain algorithm
@@ -264,7 +280,6 @@ public class ControlPanel extends JPanel implements ActionListener {
             Logger.getLogger(ControlPanel.class.getName()).log(Level.SEVERE, null, ex);
         }            
     }
-    
     
     //intialize the AlgorithmsPanel by user's choice
     private void customizedAlgorithmsPanel() {
@@ -324,22 +339,22 @@ public class ControlPanel extends JPanel implements ActionListener {
     private void initParametersPanel() {
         paraInfoLabel = new JLabel();
         paraInfoLabel.setText("Parameters:");
-        paraInfoLabel.setForeground(Color.BLACK);
+        paraInfoLabel.setForeground(Color.WHITE);
         s0Label = new JLabel();
         kLabel = new JLabel();
         tLabel = new JLabel();
         rLabel = new JLabel();
         oLabel = new JLabel();
         s0Label.setText("S0:");
-        s0Label.setForeground(Color.BLACK);
+        s0Label.setForeground(Color.WHITE);
         kLabel.setText("K:");
-        kLabel.setForeground(Color.BLACK);
+        kLabel.setForeground(Color.WHITE);
         tLabel.setText("T:");
-        tLabel.setForeground(Color.BLACK);
+        tLabel.setForeground(Color.WHITE);
         rLabel.setText("r:");
-        rLabel.setForeground(Color.BLACK);
+        rLabel.setForeground(Color.WHITE);
         oLabel.setText("o(σ):");
-        oLabel.setForeground(Color.BLACK);
+        oLabel.setForeground(Color.WHITE);
         sTextField = new JTextField(10);
         kTextField = new JTextField(10);
         tTextField = new JTextField(10);
@@ -365,15 +380,15 @@ public class ControlPanel extends JPanel implements ActionListener {
     private void initChoicePanel() {
         noteLabel = new JLabel();
         noteLabel.setText("Note:");
-        noteLabel.setForeground(Color.BLACK);
+        noteLabel.setForeground(Color.WHITE);
         instruction1Label = new JLabel();
         instruction1Label.setText("S: current stock price;   K: strike price;   "
                 + "T term of the option in years;   ");
-        instruction1Label.setForeground(Color.BLACK);
+        instruction1Label.setForeground(Color.WHITE);
         instruction2Label = new JLabel();
         instruction2Label.setText("r: risk-free interest rate;   o(σ): "
                 + "volatility of the stock price,");
-        instruction2Label.setForeground(Color.BLACK);
+        instruction2Label.setForeground(Color.WHITE);
         customizedAlgorithmTextField = new JTextField();
         customizedAlgorithmTextField.setText("[Enter alternate fomula. e.g: S+K+T-r*o]");
         addAlgorithmButton = new JButton();
@@ -449,7 +464,6 @@ public class ControlPanel extends JPanel implements ActionListener {
     private ArrayList<JCheckBox> cusAlgorithms;     //the algorithms customer adds
 
 //    private javax.swing.JScrollPane algorithmsPanel;
-    private javax.swing.JScrollPane scrollPanel;    //store the algorithmsPanel
     private javax.swing.JPanel algorithmsPanel;
     private javax.swing.JPanel parametersPanel;  //parameters
     private javax.swing.JPanel choicePanel;     //add, graph and calculate

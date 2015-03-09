@@ -32,6 +32,7 @@ public class OptionPanel extends JPanel implements ActionListener{
         backgroundPanel.setBackground(Color.white);
 
         infoLabel.setText("Please choose an option you want:");
+        infoLabel.setForeground(Color.WHITE);
         EuropeanRadioButton.setText("European");
         AmericanRadioButton.setText("American");
         AsianRadioButton.setText("Asian");

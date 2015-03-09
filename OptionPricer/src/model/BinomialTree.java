@@ -17,10 +17,10 @@ public class BinomialTree extends Algorithm {
 	private double up;		
 	private double down;		
 	private double upProb	= 0.5;
-    private double downProb = 0.5;
-    private int numIntervals = 0;
-    private Price[][] binomialTree;
-    double binomValue;
+        private double downProb = 0.5;
+        private int numIntervals = 0;
+        private Price[][] binomialTree;
+        double binomValue;
         /**
          * Inner class used by binomial tree valuation method
          */
@@ -42,11 +42,13 @@ public class BinomialTree extends Algorithm {
             super();
             this.numIntervals = intervals;
             deltaT = option.getTerm() / numIntervals;
+            results = new double[11];           
         }
 
         public BinomialTree(){};
         @Override
         public double[] computeOption(Option option){
+            //double[] results = new double[11];
             System.out.println("Up prob: " + up);
             System.out.println("Down prob: " + down);
             System.out.println("TimeStep: " + deltaT);
@@ -65,10 +67,21 @@ public class BinomialTree extends Algorithm {
                     results[i] = crunchPut(option);
                 }
                 
-            }else {
+            }else 
+            {
+                for(i=0;i<=5;i++){
+                    
+                    option.setVolatility(volatility - volatility*0.5/5*(5-i));
+                    System.out.println("Calculating CALL Option");
+                    results[i] = crunchCall(option); 
+                }
+                for(i=6;i<11;i++){
+                    option.setVolatility(volatility + volatility/0.5/5 * (i-5));
+                    System.out.println("Calculating CALL Option");
+                    results[i] = crunchCall(option);
+                }
                 
-                System.out.println("Calculating Call Option");
-                crunchCall(option);
+                
             }
             return results;
         }
@@ -77,10 +90,7 @@ public class BinomialTree extends Algorithm {
             int i,j;
             up = 1.0 + option.getRiskFreeRate() * deltaT + (option.getVolatility()*Math.sqrt(deltaT));
             down = 1.0 + option.getRiskFreeRate() * deltaT - (option.getVolatility()*Math.sqrt(deltaT));
-            
-            
-            
-            
+                                            
             binomialTree = new Price[numIntervals+1][];
             
             for (i = 0; i <= numIntervals; i++) {
@@ -103,22 +113,22 @@ public class BinomialTree extends Algorithm {
             
             // Now work backwards, filling optionPrices in the rest of the tree
             double discount = Math.exp(-option.getRiskFreeRate()*deltaT);
-            
+            if(option.getStyle() == OptionStyle.AMERICAN){
             for ( i = numIntervals-1; i >= 0; i--) {
 		for ( j = 0; j <= i; j++) {
 			binomialTree[i][j].optionPrice = 
                                 Math.max(option.getStrikeP() - binomialTree[i][j].stockPrice ,
 					discount*(upProb*binomialTree[i+1][j+1].optionPrice + downProb*binomialTree[i+1][j].optionPrice));
-                        
-                        
-                        /** original code for put options
-                         * binomialTree[i][j].optionPrice = 
-                                Math.max(option.getStrikeP() - binomialTree[i][j].stockPrice,
-					discount*(upProb*binomialTree[i+1][j+1].optionPrice + downProb*binomialTree[i+1][j].optionPrice));
-                         */
 		}
             }
-            
+            }
+            if(option.getStyle() == OptionStyle.EUROPEAN){
+                for(i=this.numIntervals-1;i>=0;i--){
+                    for(j=0;j<=i;j++){
+                        binomialTree[i][j].optionPrice = discount*(this.upProb*binomialTree[i+1][j+1].optionPrice+this.downProb*binomialTree[i+1][j].optionPrice);
+                    }
+                }
+            }
             binomValue = binomialTree[0][0].optionPrice;
             System.out.println("Option price for " + option.getClass().getName() );
             System.out.println("value: " + binomValue);
@@ -153,26 +163,36 @@ public class BinomialTree extends Algorithm {
             
             // Now work backwards, filling optionPrices in the rest of the tree
             double discount = Math.exp(-option.getRiskFreeRate()*deltaT);
-            
+            if(option.getStyle() == OptionStyle.AMERICAN){
             for ( i = numIntervals-1; i >= 0; i--) {
 		for ( j = 0; j <= i; j++) {
 			binomialTree[i][j].optionPrice = 
                                 Math.max(binomialTree[i][j].stockPrice - option.getStrikeP(),
 					discount*(upProb*binomialTree[i+1][j+1].optionPrice + downProb*binomialTree[i+1][j].optionPrice));
-                        
-                        
-                        /** original code for put options
-                         * binomialTree[i][j].optionPrice = 
-                                Math.max(option.getStrikeP() - binomialTree[i][j].stockPrice,
-					discount*(upProb*binomialTree[i+1][j+1].optionPrice + downProb*binomialTree[i+1][j].optionPrice));
-                         */
+
 		}
             }
-            
+            }
+            if(option.getStyle() == OptionStyle.EUROPEAN){
+                for ( i = numIntervals-1; i >= 0; i--) {
+		for ( j = 0; j <= i; j++) {
+			binomialTree[i][j].optionPrice = 
+                                Math.max(binomialTree[i][j].stockPrice - option.getStrikeP(),
+					discount*(upProb*binomialTree[i+1][j+1].optionPrice + downProb*binomialTree[i+1][j].optionPrice));
+
+		}
+                }  
+            }
             binomValue = binomialTree[0][0].optionPrice;
             System.out.println("Option price for " + option.toString() );
             System.out.println("value: " + binomValue);
             return binomValue;
         }
+        public static void main(String[] args){
+        Option o = new Option(50,50,0.1,0.4,0.4167,OptionRight.CALL,OptionStyle.AMERICAN);
+        o.setRight(OptionRight.CALL);
+        BinomialTree b = new BinomialTree(o,250);
+        System.out.println("Option Price:"+b.crunchPut(o));
+    }
         
 }

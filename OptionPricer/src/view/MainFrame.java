@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
         new MainFrame().setVisible(true);
 //        DoubleEvaluator de=new DoubleEvaluator();
 //        StaticVariableSet<Double> vars=new StaticVariableSet<>();
-//        ArrayList<Double> results=new ArrayList<>();
+//        ArrayList<Double> resultSet=new ArrayList<>();
 //        double s = 0;
 //        double k = 0;
 //        double t = 0;

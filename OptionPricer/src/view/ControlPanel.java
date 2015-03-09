@@ -220,7 +220,7 @@ public class ControlPanel extends JPanel implements ActionListener {
                         + OPS.theOption.getSnti());
 
                 OPS.compute();
-                System.out.println(OPS.results.size());
+                System.out.println(OPS.resultSet.size());
                 new MainFrame("RESULT");
                 mainframe.dispose();        //dispose the original frame
             }

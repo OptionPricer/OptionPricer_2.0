@@ -1,10 +1,9 @@
 package view;
 
 import controller.OPS;
-import java.awt.FlowLayout;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -12,39 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import model.Option;
+
 import model.volatilityGraph;
-import static controller.OPS.results;
+import static controller.OPS.resultSet;
 import static controller.OPS.algNames;
 
-import java.awt.Color;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYPointerAnnotation;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockContainer;
-import org.jfree.chart.block.BorderArrangement;
-import org.jfree.chart.block.EmptyBlock;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.CompositeTitle;
-import org.jfree.chart.title.LegendTitle;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.TextAnchor;
 
 /**
- * This class is used to show both the results and diagrams
+ * This class is used to show both the resultSet and diagrams
  * 
  * @author Castiel
  * @since 2015.03.07
@@ -82,8 +57,8 @@ public class ResultPanel extends JPanel implements ActionListener{
             resultTable.setValueAt(OPS.theOption.getRiskFreeRate(),i,4);
 
             resultTable.setValueAt(OPS.theOption.getVolatility(), i, 5);
-            System.out.println("-----------r:"+OPS.theOption.getVolatility());
-            resultTable.setValueAt(OPS.results.get(i)[5], i, 6);
+            System.out.println("-----------r:" + OPS.theOption.getVolatility());
+            resultTable.setValueAt(OPS.resultSet.get(i)[5], i, 6);
         }
 
         restartButton.setText("Restart");
@@ -146,7 +121,7 @@ public class ResultPanel extends JPanel implements ActionListener{
             double[][] optionPrice = new double[numOfAlgorithm][11];
             for(i=0;i<numOfAlgorithm;i++){
                 for(j=0;j<11;j++){
-                    optionPrice[i][j]=results.get(i)[j];
+                    optionPrice[i][j]= resultSet.get(i)[j];
                 }
             }
             //algNames.toArray();

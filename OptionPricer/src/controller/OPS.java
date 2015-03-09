@@ -26,9 +26,9 @@ public class OPS {
      */
     public static ArrayList<Algorithm> algList;
     /**
-     * An arraylist to store the calculation results.
+     * An arraylist to store the calculation resultSet.
      */
-    public static ArrayList<double[]> results;
+    public static ArrayList<double[]> resultSet;
     /**
      * The option object which is to be calculated
      */
@@ -52,7 +52,7 @@ public class OPS {
     public static void initAlgs(){
         algList = new ArrayList<Algorithm>();
         algNames = new ArrayList<String>();
-        results = new ArrayList();
+        resultSet = new ArrayList();
         // Not sure what to do so far.
     }
 
@@ -138,9 +138,9 @@ public class OPS {
         }
         for(Algorithm al:algList){
             System.out.println(al.getClass().getName());
-            results.add(al.computeOption(OPS.theOption));
+            resultSet.add(al.computeOption(OPS.theOption));
         }
-        for(double[] r:results){
+        for(double[] r: resultSet){
             for(double p:r){
                 System.out.println(p);
             }

@@ -16,6 +16,14 @@ import java.util.ArrayList;
  * @version 1.1.0
  */
 public class FileHandler {    
+    
+    /**
+     * read file
+     * 
+     * @param fileName      file's name
+     * @param algoList      those formulas in the file
+     * @throws IOException 
+     */
     public static void readByLines(String fileName, ArrayList algoList) throws IOException{
         File file = new File(fileName);
         BufferedReader reader = null;
@@ -34,15 +42,18 @@ public class FileHandler {
         }         
     }
     
+    /**
+     * add new formula into certain file
+     * 
+     * @param fileName      file's name
+     * @param Formula       the String of new formula
+     * @throws IOException 
+     */
     public static void addNewFormula(String fileName, String Formula) throws IOException{
         File file = new File(fileName);
-//        System.out.println(1);
         FileWriter fileWriter = new FileWriter(file, true);
-//        System.out.println(2);
         BufferedWriter writer = new BufferedWriter(fileWriter);
-//        System.out.println(3);
         writer.write(Formula + "\n");
-//        System.out.println(4);
         writer.close();
     }
 }

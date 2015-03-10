@@ -3,12 +3,20 @@ package model;
 import java.util.Random;
 
 /**
- * Created by Sky on 2015/3/6-006.
+ * This class is inherited from Algorithm. It is used for calculating option price by simulation method.
+ * @author Lijing (Catherine) LIU & Tianyu (Sky) XU
+ * @version 1.4.0
+ * @since 03.01.2015
+ * Note: additional attributes are required for calculation (number of trials, number of time intervals).
  */
 public class SimulationModel extends Algorithm{
     private int numIntervals;
     private int numTrials;
-
+    /**
+     * Constructor: the values of the additional attributes are set.
+     * @param numIntervals
+     * @param numTrials 
+     */
     public SimulationModel(int numIntervals, int numTrials) {
         this.numIntervals = numIntervals;
         this.numTrials = numTrials;
@@ -31,7 +39,7 @@ public class SimulationModel extends Algorithm{
     }
 
     /**
-     * Constructor.
+     * Default Constructor.
      */
     public SimulationModel(){};
 
@@ -80,36 +88,6 @@ public class SimulationModel extends Algorithm{
      */
 
     private double crunchPut(Option o) {
-        /*int i, trialCount;
-        double deltaT = o.getTerm()/(double)numIntervals;
-        double trialRunningSum, trialAverage, trialPayoff;
-        double simulationRunningSum, simulationAveragePayoff;
-        double s ;
-        Random rand=new Random();
-        simulationRunningSum = 0.0;
-        for (trialCount = 1; trialCount <= numTrials; trialCount++) {
-            s = o.getsNought();
-            trialRunningSum = 0.0;
-            double nns = 0;
-            for (i = 0; i < numIntervals; i++) {
-                // nns = rand.nextSobelNormal();
-                //    nns = rand.nextMoroNormal();
-                nns=rand.nextGaussian();
-                s = s*Math.exp((o.getRiskFreeRate()-o.getVolatility()*o.getVolatility()/2)*deltaT +
-                        o.getVolatility()*nns*Math.sqrt(deltaT));
-                trialRunningSum += s;
-            }
-            trialAverage = trialRunningSum/numIntervals;
-            /*************************************
-             * The only difference between calculating call and put option in simulation.
-             ***************************************/
-            /*trialPayoff = Math.max(o.getStrikeP()-trialAverage, 0.0);
-            simulationRunningSum += trialPayoff;
-        }
-        simulationAveragePayoff = simulationRunningSum / numTrials;
-        double valueOfOption;
-        valueOfOption = simulationAveragePayoff * Math.exp(-o.getRiskFreeRate()*o.getTerm());
-        return valueOfOption;*/
         int i; 
         int countTrial;
         double deltaT;
@@ -157,37 +135,7 @@ public class SimulationModel extends Algorithm{
      * @return the result.
      */
 
-    private double crunchCall(Option o) {
-        /*int i, trialCount;
-        double deltaT = o.getTerm()/(double)numIntervals;
-        double trialRunningSum, trialAverage, trialPayoff;
-        double simulationRunningSum, simulationAveragePayoff;
-        double s ;
-        Random rand=new Random();
-        simulationRunningSum = 0.0;
-        for (trialCount = 1; trialCount <= numTrials; trialCount++) {
-            s = o.getsNought();
-            trialRunningSum = 0.0;
-            double nns = 0;
-            for (i = 0; i < numIntervals; i++) {
-                // nns = rand.nextSobelNormal();
-                //    nns = rand.nextMoroNormal();
-                nns=rand.nextGaussian();
-                s = s*Math.exp((o.getRiskFreeRate()-o.getVolatility()*o.getVolatility()/2)*deltaT +
-                        o.getVolatility()*nns*Math.sqrt(deltaT));
-                trialRunningSum += s;
-            }
-            trialAverage = trialRunningSum/numIntervals;
-            /*************************************
-             * The only difference between calculating call and put option in simulation.
-             ***************************************/
-            /*trialPayoff = Math.max(trialAverage - o.getStrikeP(), 0.0);
-            simulationRunningSum += trialPayoff;
-        }
-        simulationAveragePayoff = simulationRunningSum / numTrials;
-        double valueOfOption;
-        valueOfOption = simulationAveragePayoff * Math.exp(-o.getRiskFreeRate()*o.getTerm());
-        return valueOfOption;*/
+    private double crunchCall(Option o) {        
         int i;
         int countTrial;
         double deltaT;

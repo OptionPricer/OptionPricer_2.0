@@ -43,6 +43,8 @@ public class ResultPanel extends JPanel implements ActionListener{
             };
         promptLabel = new JLabel();
         resultTable = new JTable(data, columnNames);
+        resultTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+        resultTable.getColumnModel().getColumn(6).setPreferredWidth(100);        
         JScrollPane scrollPane = new JScrollPane(resultTable);
         resultTable.setFillsViewportHeight(true);
         restartButton = new JButton();
@@ -52,6 +54,7 @@ public class ResultPanel extends JPanel implements ActionListener{
         
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");        
         
+        //set those attributes to the table
         for (int i=0;i<OPS.algList.size()+OPS.customizedAlgNames.size();i++) {
             if(i<OPS.algNames.size()){
                 resultTable.setValueAt(OPS.algNames.get(i),i,0);
@@ -64,7 +67,6 @@ public class ResultPanel extends JPanel implements ActionListener{
             resultTable.setValueAt(OPS.theOption.getTerm(),i,3);
             resultTable.setValueAt(OPS.theOption.getRiskFreeRate(),i,4);
             resultTable.setValueAt(OPS.theOption.getVolatility(), i, 5);
-//            System.out.println("-----------r:" + OPS.theOption.getVolatility());
             if(i<OPS.algNames.size()){
                 resultTable.setValueAt(df.format(OPS.resultSet.get(i)[5]), i, 6);
             }
@@ -90,7 +92,6 @@ public class ResultPanel extends JPanel implements ActionListener{
         con.gridwidth = 3;
         this.add(scrollPane, con);
         
-//        con.fill = GridBagConstraints.HORIZONTAL;
         con.insets = new Insets(5, 3, 0, 3);
         con.gridx = 0;
         con.gridy = 2;
@@ -108,8 +109,7 @@ public class ResultPanel extends JPanel implements ActionListener{
         restartButton.setActionCommand("RESTART");
         restartButton.addActionListener(this);
         showGraphButton.setActionCommand("SHOW");
-        showGraphButton.addActionListener(this);
-                  
+        showGraphButton.addActionListener(this);                  
     }
     
     
@@ -121,8 +121,7 @@ public class ResultPanel extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SHOW")){
             int i,j;
-            double[] v = new double[11];//store the 11 values for the volatility
-            double[] op = new double[11];//store the 11 values responded to 11 different volatilities
+            double[] v = new double[11];//store the 11 values responded to 11 different volatilities
             
             double vola = OPS.theOption.getVolatility();//get the volatility of the present option
             for(i=0;i<=5;i++) //calculate the 11 volatilities
@@ -156,7 +155,4 @@ public class ResultPanel extends JPanel implements ActionListener{
     private javax.swing.JTable resultTable;
     private javax.swing.JButton restartButton;
     private javax.swing.JButton showGraphButton;
-
-    
-    
 }

@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 /**
- *
+ * This class inherits from Algorithm. It is used for calculating option price with binomial tree.
  * @author jameslaney
+ * @since 03.03.2015
+ * @version 1.3.0
  */
 public class BinomialTree extends Algorithm {
         
@@ -46,25 +44,27 @@ public class BinomialTree extends Algorithm {
         }
 
         public BinomialTree(){};
+        /**
+         * This method is inherited from the parent class Algorithm, which implement 
+         * the calculation of option price 11 times and generate 11 option price responded to 11 
+         * different volatilities for the purpose of drawing volatility smile graph.
+         * @param option this is the option object to whose option price is to be calculated.
+         * @return The return is an array of option price, which will used to generate 11 points and 
+         */
         @Override
         public double[] computeOption(Option option){
             double temp=option.getVolatility();
             //double[] results = new double[11];
-            System.out.println("Up prob: " + up);
-            System.out.println("Down prob: " + down);
-            System.out.println("TimeStep: " + deltaT);
             int i;double volatility = option.getVolatility();;
             if(option.getRight() == OptionRight.PUT){
                 
                 for(i=0;i<=5;i++){
                     
                     option.setVolatility(volatility - volatility*0.5/5*(5-i));
-                    System.out.println("Calculating PUT Option");
                     results[i] = crunchPut(option); 
                 }
                 for(i=6;i<11;i++){
                     option.setVolatility(volatility + volatility/0.5/5 * (i-5));
-                    System.out.println("Calculating PUT Option");
                     results[i] = crunchPut(option);
                 }
                 
@@ -73,12 +73,10 @@ public class BinomialTree extends Algorithm {
                 for(i=0;i<=5;i++){
                     
                     option.setVolatility(volatility - volatility*0.5/5*(5-i));
-                    System.out.println("Calculating CALL Option");
                     results[i] = crunchCall(option); 
                 }
                 for(i=6;i<11;i++){
                     option.setVolatility(volatility + volatility/0.5/5 * (i-5));
-                    System.out.println("Calculating CALL Option");
                     results[i] = crunchCall(option);
                 }
                 
@@ -87,7 +85,11 @@ public class BinomialTree extends Algorithm {
             option.setVolatility(temp);
             return results;
         }
-        
+        /**
+         * This crunchPut method calculates put option price for American, European option.
+         * @param option This is the option object whose price is to be calculated.
+         * @return The return value is the price of the given option.
+         */
         private double crunchPut(Option option){
             int i,j;
             up = 1.0 + option.getRiskFreeRate() * deltaT + (option.getVolatility()*Math.sqrt(deltaT));
@@ -103,7 +105,6 @@ public class BinomialTree extends Algorithm {
                         binomialTree[i][j] =  new Price(option.getsNought() * Math.pow(up, j) * Math.pow(down, i-j), 0);
 		}
             }
-            System.out.println("Initilized Tree");
             // Fill the optionPrices at the terminal nodes for CALL = max(S(t) - k, 0) option
 //            for ( j = 0; j <= numIntervals; j++) {
 //		binomialTree[numIntervals][j].optionPrice = Math.max(binomialTree[numIntervals][j].stockPrice - option.getStrikeP(), 0.0);
@@ -132,11 +133,13 @@ public class BinomialTree extends Algorithm {
                 }
             }
             binomValue = binomialTree[0][0].optionPrice;
-            System.out.println("Option price for " + option.getClass().getName() );
-            System.out.println("value: " + binomValue);
             return binomValue;
         }
-        
+        /**
+         * This crunchCall method calculates call option price for American, European option.
+         * @param option This is the option object whose price is to be calculated.
+         * @return The return value is the price of the given option.
+         */
         private double crunchCall(Option option){
           
             int i,j;
@@ -186,8 +189,6 @@ public class BinomialTree extends Algorithm {
                 }  
             }
             binomValue = binomialTree[0][0].optionPrice;
-            System.out.println("Option price for " + option.toString() );
-            System.out.println("value: " + binomValue);
             return binomValue;
         }       
         

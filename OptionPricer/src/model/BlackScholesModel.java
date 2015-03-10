@@ -1,8 +1,10 @@
 package model;
 
 /**
- * @author Sky
- * A class for model.Option Price calculation by Black-Scholes formula.
+ * This class inherits from Algorithm. It is used for calculating option price Black-Scholes formula.
+ * @author Tianyu (Sky) XU
+ * @since 02.28.2015
+ * @version 1.2.0
  * Note: Black-Scholes is applicable for European call & put option and American call option.
  */
 public class BlackScholesModel extends Algorithm{
@@ -111,28 +113,5 @@ public class BlackScholesModel extends Algorithm{
         else
             return result;
     }
-
-//    /**************************************
-//     * testing for BS algorithm.
-//     * @param args
-//     *************************************/
-//    public static void main(String args[]){
-//        model.BlackScholesModel bso=new model.BlackScholesModel();
-//        model.Option o1=new model.Option(50.0,50.0,0.1,0.4,5.0/12,model.OptionRight.CALL,model.OptionStyle.EUROPEAN);
-////        System.out.println("EURO PUT, K=50,p=" + bso.crunchPut(o1));
-////        System.out.println("EURO CALL, K=50,p="+bso.crunchCall(o1));
-//        model.Option o2=new model.Option(40.0,50.0,0.1,0.4,5.0/12,model.OptionRight.PUT,model.OptionStyle.EUROPEAN);
-////        System.out.println("EURO PUT, K=40,p=" + bso.crunchPut(o2));
-////        System.out.println("EURO CALL, K=40,p="+bso.crunchCall(o2));
-//        double prc[]=new double[11];
-//        prc=bso.computeOption(o1);
-//        for (int i = 0; i < 11 ; i++) {
-//            System.out.println(prc[i]);
-//        }
-//        prc=bso.computeOption(o2);
-//        for (int i = 0; i < 11 ; i++) {
-//            System.out.println(prc[i]);
-//        }
-//    }
 
 }

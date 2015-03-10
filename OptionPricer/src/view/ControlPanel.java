@@ -117,7 +117,7 @@ public class ControlPanel extends JPanel implements ActionListener {
                         "invalid parameter", JOptionPane.INFORMATION_MESSAGE);
             } //pop out a dialogue to remind no algorithm errors
             else if (checkAlgorithmsSelected(isCusAlgorithm)) {
-                JOptionPane.showMessageDialog(parametersPanel, "At least choose one algorithm",
+                JOptionPane.showMessageDialog(parametersPanel, "Choose at least one algorithm",
                         "lack of algorithm", JOptionPane.INFORMATION_MESSAGE);
             } //once those inputs are in correct format
             else {
@@ -137,123 +137,6 @@ public class ControlPanel extends JPanel implements ActionListener {
                 new MainFrame("RESULT");
                 mainframe.dispose();        //dispose the original frame
             }
-        }
-    }
-
-    private boolean checkFieldEmpty() {
-        if (sTextField.getText().isEmpty() || kTextField.getText().isEmpty()
-                || tTextField.getText().isEmpty() || rTextField.getText().isEmpty()
-                || oTextField.getText().isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean checkFieldNumeric() {
-        if (!isNumeric(sTextField.getText()) || !isNumeric(kTextField.getText())
-                || !isNumeric(tTextField.getText()) || !isNumeric(rTextField.getText())
-                || !isNumeric(oTextField.getText())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean checkAlgorithmsSelected(boolean isCusAlgorithm) {
-        if (!bsCheckBox.isSelected() && !btCheckBox.isSelected()
-                && !niCheckBox.isSelected() && !sCheckBox.isSelected() && !isCusAlgorithm) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void setUpOPSWithBasicAlgo() {
-        double stf = Double.parseDouble(sTextField.getText());
-        double ktf = Double.parseDouble(kTextField.getText());
-        double ttf = Double.parseDouble(tTextField.getText());
-        double rtf = Double.valueOf(rTextField.getText());
-        double otf = Double.valueOf(oTextField.getText()).doubleValue();
-        String tempInput;       //temporarily store additional input
-
-        //set attributes in OPS
-        OPS.theOption.setsNought(stf);
-        OPS.theOption.setStrikeP(ktf);
-        OPS.theOption.setTerm(ttf);
-        OPS.theOption.setRiskFreeRate(rtf);
-        OPS.theOption.setVolatility(otf);
-
-        OPS.algNames.clear();       //initialization
-        //check which basic algorithm is selected, further parameters should be inputted if needed
-        if (bsCheckBox.isSelected()) {
-            OPS.algNames.add("BlackScholesModel");
-        }
-        //one more parameter is needed for Binomial Tree
-        if (btCheckBox.isSelected()) {
-            OPS.algNames.add("BinomialTree");
-            tempInput = JOptionPane.showInputDialog("Binomial Tree: \n"
-                    + "Number of time intervals: ");
-            //continue inputting until the valid input is gotten
-            while (!isValueValid(tempInput, "Integer")) {
-                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
-                        + "Binomial Tree: Number of time intervals: ");
-            }
-            int BTnti = Integer.parseInt(tempInput);
-            OPS.theOption.setBTnti(BTnti);
-        }
-        //three more parameters are needed for Finite Difference (Numerical Integration)
-        if (niCheckBox.isSelected()) {
-            OPS.algNames.add("FiniteDifference");
-            tempInput = JOptionPane.showInputDialog("Numerical Integration: \n"
-                    + "Number of time intervals: ");
-            //continue inputting until the valid input is gotten
-            while (!isValueValid(tempInput, "Integer")) {
-                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
-                        + "Numerical Integration: Number of time intervals: ");
-            }
-            int FDnti = Integer.parseInt(tempInput);
-            OPS.theOption.setFDnti(FDnti);
-            tempInput = JOptionPane.showInputDialog("Numerical Integration: \n"
-                    + "Number of price intervals: ");
-            //continue inputting until the valid input is gotten
-            while (!isValueValid(tempInput, "Integer")) {
-                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
-                        + "Numerical Integration: Number of price intervals: ");
-            }
-            int FDnpi = Integer.parseInt(tempInput);
-            OPS.theOption.setFDnpi(FDnpi);
-            tempInput = JOptionPane.showInputDialog("Numerical Integration: \n"
-                    + "Max limitation stock price: ");
-            //continue inputting until the valid input is gotten
-            while (!isValueValid(tempInput, "Double")) {
-                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
-                        + "Numerical Integration: Max limitation stock price: ");
-            }
-            double FDsmax = Double.parseDouble(tempInput);
-            OPS.theOption.setFDsmax(FDsmax);
-        }
-        //two more parameters are needed for Finite Difference (Numerical Integration)
-        if (sCheckBox.isSelected()) {
-            OPS.algNames.add("SimulationModel");
-            tempInput = JOptionPane.showInputDialog("Simulation: \n"
-                    + "Number of time intervals: ");
-            //continue inputting until the valid input is gotten
-            while (!isValueValid(tempInput, "Integer")) {
-                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
-                        + "Simulation: Number of time intervals: ");
-            }
-            int Snti = Integer.parseInt(tempInput);
-            OPS.theOption.setSnti(Snti);
-            tempInput = JOptionPane.showInputDialog("Simulation: \n"
-                    + "Number of trials (recommend 10000, otherwise it costs long time): ");
-            //continue inputting until the valid input is gotten
-            while (!isValueValid(tempInput, "Integer")) {
-                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
-                        + "Simulation: Number of trials: ");
-            }
-            int Snt = Integer.parseInt(tempInput);
-            OPS.theOption.setSnt(Snt);
         }
     }
 
@@ -495,6 +378,128 @@ public class ControlPanel extends JPanel implements ActionListener {
         calculateButton.setActionCommand("CALCULATE");
         addAlgorithmButton.addActionListener(tempcp);
         calculateButton.addActionListener(tempcp);
+    }
+    
+    //check whether there is empty textField
+    private boolean checkFieldEmpty() {
+        if (sTextField.getText().isEmpty() || kTextField.getText().isEmpty()
+                || tTextField.getText().isEmpty() || rTextField.getText().isEmpty()
+                || oTextField.getText().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //check whether the content in the textField is number
+    private boolean checkFieldNumeric() {
+        if (!isNumeric(sTextField.getText()) || !isNumeric(kTextField.getText())
+                || !isNumeric(tTextField.getText()) || !isNumeric(rTextField.getText())
+                || !isNumeric(oTextField.getText())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //check whether user select a algorithm
+    private boolean checkAlgorithmsSelected(boolean isCusAlgorithm) {
+        if (!bsCheckBox.isSelected() && !btCheckBox.isSelected()
+                && !niCheckBox.isSelected() && !sCheckBox.isSelected() && !isCusAlgorithm) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    //set those basic attributes OPS has, including those user choosing basic algorithms 
+    private void setUpOPSWithBasicAlgo() {
+        double stf = Double.parseDouble(sTextField.getText());
+        double ktf = Double.parseDouble(kTextField.getText());
+        double ttf = Double.parseDouble(tTextField.getText());
+        double rtf = Double.valueOf(rTextField.getText());
+        double otf = Double.valueOf(oTextField.getText()).doubleValue();
+        String tempInput;       //temporarily store additional input
+
+        //set attributes in OPS
+        OPS.theOption.setsNought(stf);
+        OPS.theOption.setStrikeP(ktf);
+        OPS.theOption.setTerm(ttf);
+        OPS.theOption.setRiskFreeRate(rtf);
+        OPS.theOption.setVolatility(otf);
+
+        OPS.algNames.clear();       //initialization
+        //check which basic algorithm is selected, further parameters should be inputted if needed
+        if (bsCheckBox.isSelected()) {
+            OPS.algNames.add("BlackScholesModel");
+        }
+        //one more parameter is needed for Binomial Tree
+        if (btCheckBox.isSelected()) {
+            OPS.algNames.add("BinomialTree");
+            tempInput = JOptionPane.showInputDialog("Binomial Tree: \n"
+                    + "Number of time intervals: ");
+            //continue inputting until the valid input is gotten
+            while (!isValueValid(tempInput, "Integer")) {
+                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
+                        + "Binomial Tree: Number of time intervals: ");
+            }
+            int BTnti = Integer.parseInt(tempInput);
+            OPS.theOption.setBTnti(BTnti);
+        }
+        //three more parameters are needed for Finite Difference (Numerical Integration)
+        if (niCheckBox.isSelected()) {
+            OPS.algNames.add("FiniteDifference");
+            tempInput = JOptionPane.showInputDialog("Numerical Integration: \n"
+                    + "Number of time intervals: ");
+            //continue inputting until the valid input is gotten
+            while (!isValueValid(tempInput, "Integer")) {
+                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
+                        + "Numerical Integration: Number of time intervals: ");
+            }
+            int FDnti = Integer.parseInt(tempInput);
+            OPS.theOption.setFDnti(FDnti);
+            tempInput = JOptionPane.showInputDialog("Numerical Integration: \n"
+                    + "Number of price intervals: ");
+            //continue inputting until the valid input is gotten
+            while (!isValueValid(tempInput, "Integer")) {
+                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
+                        + "Numerical Integration: Number of price intervals: ");
+            }
+            int FDnpi = Integer.parseInt(tempInput);
+            OPS.theOption.setFDnpi(FDnpi);
+            tempInput = JOptionPane.showInputDialog("Numerical Integration: \n"
+                    + "Max limitation stock price: ");
+            //continue inputting until the valid input is gotten
+            while (!isValueValid(tempInput, "Double")) {
+                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
+                        + "Numerical Integration: Max limitation stock price: ");
+            }
+            double FDsmax = Double.parseDouble(tempInput);
+            OPS.theOption.setFDsmax(FDsmax);
+        }
+        //two more parameters are needed for Finite Difference (Numerical Integration)
+        if (sCheckBox.isSelected()) {
+            OPS.algNames.add("SimulationModel");
+            tempInput = JOptionPane.showInputDialog("Simulation: \n"
+                    + "Number of time intervals: ");
+            //continue inputting until the valid input is gotten
+            while (!isValueValid(tempInput, "Integer")) {
+                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
+                        + "Simulation: Number of time intervals: ");
+            }
+            int Snti = Integer.parseInt(tempInput);
+            OPS.theOption.setSnti(Snti);
+            tempInput = JOptionPane.showInputDialog("Simulation: \n"
+                    + "Number of trials (recommend 10,000) "
+                    + "Trials exceeding 10,000 will increase computational time. ");
+            //continue inputting until the valid input is gotten
+            while (!isValueValid(tempInput, "Integer")) {
+                tempInput = JOptionPane.showInputDialog("Invalid input, please input again:\n"
+                        + "Simulation: Number of trials: ");
+            }
+            int Snt = Integer.parseInt(tempInput);
+            OPS.theOption.setSnt(Snt);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

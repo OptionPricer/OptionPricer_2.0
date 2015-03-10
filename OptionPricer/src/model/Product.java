@@ -1,21 +1,34 @@
 package model;
 
 /**
- * @author Sky
+ * @author Tianyu (Sky) XU
+ * @since 02.28.2015
+ * @version 1.0.0
  * A class of general financial products
  */
 public class Product {
 
-    private double strikeP;
-    private double sNought;
-    private double riskFreeRate;
-    private double volatility;
+    private double strikeP;//strike price
+    private double sNought;//current stock price
+    private double riskFreeRate;//risk free rate
+    private double volatility;//volatility
     private double term;// Unit: years
 
 
+    /**
+     * Constructor.
+     */
     public Product() {
     }
 
+    /**
+     * Constructor.
+     * @param strikeP strike price.
+     * @param sNought current stock price.
+     * @param riskFreeRate risk free rate.
+     * @param volatility volatility.
+     * @param term the term in years.
+     */
     public Product(double strikeP, double sNought, double riskFreeRate, double volatility, double term) {
         this.strikeP = strikeP;
         this.sNought = sNought;

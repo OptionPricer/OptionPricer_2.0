@@ -11,12 +11,18 @@ import model.OptionRight;
 import model.OptionStyle;
 
 /**
- *
- * @author Castiel
+ * This panel is to show which style and right of the option user wants to calculate
+ * 
+ * @author Wangyu Huang(Castiel)
  * @since 2015.03.03
  * @version 1.2.0
  */
 public class OptionPanel extends JPanel implements ActionListener{
+    /**
+     * Constructor
+     * 
+     * @param jf    the mainframe
+     */
     public OptionPanel(JFrame jf){
         mainframe = jf;         //store the information of mainframe
         selectPanel = new javax.swing.JPanel();
@@ -124,9 +130,14 @@ public class OptionPanel extends JPanel implements ActionListener{
         EuropeanRadioButton.setSelected(true);
     }
       
+    @Override
+    /**
+     * action will be performed after user press "PUT" or "CALL"
+     */
     public void actionPerformed(ActionEvent e){    
         OptionStyle style = null;
         OptionRight right = null;   
+        
         //get the button user select
         if(EuropeanRadioButton.isSelected()){
             style = OptionStyle.EUROPEAN;
@@ -152,8 +163,7 @@ public class OptionPanel extends JPanel implements ActionListener{
             OPS.initAlgs();
             new MainFrame("CONTROL");   
             mainframe.dispose();
-        }
-        
+        }        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

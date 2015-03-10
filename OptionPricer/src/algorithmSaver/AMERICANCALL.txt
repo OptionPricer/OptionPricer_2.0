@@ -1,4 +1,3 @@
-testng﻿
 s + r
 t - o
-k * t + s
+k * t +s

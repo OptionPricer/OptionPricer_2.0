@@ -184,6 +184,7 @@ public class FiniteDifference extends Algorithm{
     
     @Override
     public double[] computeOption(Option o){
+        double temp=o.getVolatility();
         double[] optionValues = new double[11];
         int i = 0;
         for(i=0;i<=5;i++){
@@ -200,6 +201,7 @@ public class FiniteDifference extends Algorithm{
             if(o.getRight() == OptionRight.CALL)
                 optionValues[i] = this.crunchCall(o);
         }
+        o.setVolatility(temp);
         return optionValues;
     }
     

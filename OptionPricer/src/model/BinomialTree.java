@@ -48,6 +48,7 @@ public class BinomialTree extends Algorithm {
         public BinomialTree(){};
         @Override
         public double[] computeOption(Option option){
+            double temp=option.getVolatility();
             //double[] results = new double[11];
             System.out.println("Up prob: " + up);
             System.out.println("Down prob: " + down);
@@ -83,6 +84,7 @@ public class BinomialTree extends Algorithm {
                 
                 
             }
+            option.setVolatility(temp);
             return results;
         }
         
@@ -187,12 +189,6 @@ public class BinomialTree extends Algorithm {
             System.out.println("Option price for " + option.toString() );
             System.out.println("value: " + binomValue);
             return binomValue;
-        }
-        public static void main(String[] args){
-        Option o = new Option(50,50,0.1,0.4,0.4167,OptionRight.CALL,OptionStyle.AMERICAN);
-        o.setRight(OptionRight.CALL);
-        BinomialTree b = new BinomialTree(o,250);
-        System.out.println("Option Price:"+b.crunchPut(o));
-    }
+        }       
         
 }

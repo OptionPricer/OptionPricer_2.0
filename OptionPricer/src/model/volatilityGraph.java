@@ -10,32 +10,24 @@ package model;
  * @author catherine_Liu
  */
 import java.awt.Color;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.util.ArrayList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.XYPointerAnnotation;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockContainer;
-import org.jfree.chart.block.BorderArrangement;
-import org.jfree.chart.block.EmptyBlock;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.CompositeTitle;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
-public class volatilityGraph extends ApplicationFrame{
+public class volatilityGraph extends JFrame{
         private double[][] optionPrice ;//2-dimension array to store option price of different algorithm the user selected.
         private double[] volatility ;//eleven volatility value for drawing graph
         XYSeriesCollection xysc = new XYSeriesCollection();
@@ -51,6 +43,7 @@ public class volatilityGraph extends ApplicationFrame{
                 
             }
             setContentPane(createDemoPanel(numOfDataset,this.xysc));
+//            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
 
         private XYDataset createDataset(int numOfDataset, XYSeriesCollection xysc) {           
@@ -97,7 +90,7 @@ public class volatilityGraph extends ApplicationFrame{
         }
 
         public JPanel createDemoPanel(int numOfDataset, XYSeriesCollection xysc) {
-            JFreeChart jfreechart = createChart(numOfDataset,xysc);
+            JFreeChart jfreechart = createChart(numOfDataset,xysc);            
             return new ChartPanel(jfreechart);
         }
 }

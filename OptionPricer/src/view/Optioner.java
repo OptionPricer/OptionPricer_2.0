@@ -7,7 +7,7 @@ package view;
 
 /**
  *
- * @author Castiel
+ * @author Wangyu Huang(Castiel)
  */
 public class Optioner {
 

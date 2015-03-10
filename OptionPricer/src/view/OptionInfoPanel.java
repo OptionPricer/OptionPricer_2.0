@@ -10,7 +10,7 @@ import model.OptionStyle;
  * This class is used to show the information of which option and what the type
  * of the option for the user.
  * 
- * @author Castiel
+ * @author Wangyu Huang(Castiel)
  * @since 2015.03.07
  * @version 1.1.0
  */

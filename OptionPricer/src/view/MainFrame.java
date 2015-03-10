@@ -1,31 +1,29 @@
 package view;
 
-import com.fathzer.soft.javaluator.DoubleEvaluator;
-import com.fathzer.soft.javaluator.StaticVariableSet;
 import controller.OPS;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * This main frame is the basic container for all other sub frames.
+ * This main frame is the basic container for all other component panel.
  *
- * @author Castiel
+ * @author Wangyu Huang(Castiel)
  * @since 2015.03.02
- * @version 1.2.0
+ * @version 1.3.0
  *
  */
 public class MainFrame extends JFrame {
-    private final String IMGPATH="/pictures/cmu_wordmark.jpg";
-    //Constructor, for the option frame
+    /**
+     * Default Constructor, for the option frame, which is the welcome frame
+     */
     public MainFrame() {
         initHeadPanel();
-
+        
         Container c = getContentPane();
         c.setLayout(new FlowLayout(1, 10, 10));
         c.add(headPanel);       //the headPanel is on the top        
@@ -35,41 +33,46 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
         this.setTitle("Option Pricer");
         this.setBackground(new java.awt.Color(150, 0, 0));
-        this.setSize(1000, 700);
+        this.setSize(1000, 720);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-    //Constructor, for the main function & result frame
+    /**
+     * Constructor, for the main function & result frame
+     * 
+     * @param operation determine which frame to jump
+     */
     public MainFrame(String operation) {
         initHeadPanel();        //the headPanel is on the top 
         Container c = getContentPane();
         c.setLayout(new FlowLayout(1, 10, 10));
-        c.add(headPanel);
+        c.add(headPanel);      
         OptionInfoPanel oip = new OptionInfoPanel(OPS.theOption.getStyle(), OPS.theOption.getRight());
         c.add(oip);             //the oip is at the top of CONTROLL and RESULT AREA
 
         final MainFrame tempmf = this;      //to get the mainframe
-        JButton backButton = new JButton();
-        backButton.setText("");
-        //once back button is pressed, the current frame will disappear
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new MainFrame();
-                tempmf.dispose();
-            }
-        });
-        c.add(backButton);      //the back button is at the left side of CONTROLL and RESULT AREA
-        
+
         //jump to the main function frame
         if (operation.equals("CONTROL")) {
-            // the CONTROL AREA is in the bottom      
+            // the CONTROL AREA is at the bottom      
+            JButton backButton = new JButton();
+            backButton.setText("");
+            //once back button is pressed, the current frame will disappear
+            backButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    new MainFrame();
+                    tempmf.dispose();
+                }
+            });
+            c.add(backButton);      //the back button is at the left side of CONTROLL and RESULT AREA
+
             //transfer mainframe's information through 'this'
             ControlPanel cp = new ControlPanel(this);
             c.add(cp);
-        }
-        //jump to the result frame
+        } 
+          //jump to the result frame
         else if (operation.equals("RESULT")) {
-            // result area                        
+            // the REAULT AREA is at the bottom
             ResultPanel rp = new ResultPanel(this);
             c.add(rp);
         }
@@ -86,7 +89,6 @@ public class MainFrame extends JFrame {
     private void initHeadPanel() {
         headPanel = new javax.swing.JPanel();
         headLabel = new javax.swing.JLabel();
-//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         headPanel.setBackground(new java.awt.Color(150, 0, 0));
         headPanel.setMaximumSize(new java.awt.Dimension(1000, 100));
@@ -118,31 +120,11 @@ public class MainFrame extends JFrame {
 
     public static void main(String[] args) {
         new MainFrame().setVisible(true);
-//        DoubleEvaluator de=new DoubleEvaluator();
-//        StaticVariableSet<Double> vars=new StaticVariableSet<>();
-//        ArrayList<Double> resultSet=new ArrayList<>();
-//        double s = 0;
-//        double k = 0;
-//        double t = 0;
-//        double o = 0;
-//        double r = 0;
-//        vars.set("s",s);
-//        vars.set("k",k);
-//        vars.set("t",t);
-//        vars.set("o",o);
-//        vars.set("r",r);
-//        // Evaluate an expression
-//        String str="(r-k/r)*t-o/7";
-//        try {
-//            System.out.println(str + " = " + de.evaluate(str, vars));
-//        }
-//        catch (Exception e){
-//            System.out.println("INPUT ERROR: "+e.getMessage());
-//        }
-
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables    
+    //the directory of trademark picture
+    private final String IMGPATH = "/pictures/cmu_wordmark.jpg";
     private javax.swing.JLabel headLabel;
     private javax.swing.JPanel headPanel;
     // End of variables declaration//GEN-END:variables

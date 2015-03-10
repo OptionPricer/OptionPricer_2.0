@@ -80,7 +80,7 @@ public class SimulationModel extends Algorithm{
      */
 
     private double crunchPut(Option o) {
-        int i, trialCount;
+        /*int i, trialCount;
         double deltaT = o.getTerm()/(double)numIntervals;
         double trialRunningSum, trialAverage, trialPayoff;
         double simulationRunningSum, simulationAveragePayoff;
@@ -103,12 +103,48 @@ public class SimulationModel extends Algorithm{
             /*************************************
              * The only difference between calculating call and put option in simulation.
              ***************************************/
-            trialPayoff = Math.max(o.getStrikeP()-trialAverage, 0.0);
+            /*trialPayoff = Math.max(o.getStrikeP()-trialAverage, 0.0);
             simulationRunningSum += trialPayoff;
         }
         simulationAveragePayoff = simulationRunningSum / numTrials;
         double valueOfOption;
         valueOfOption = simulationAveragePayoff * Math.exp(-o.getRiskFreeRate()*o.getTerm());
+        return valueOfOption;*/
+        int i; 
+        int countTrial;
+        double deltaT;
+        deltaT = o.getTerm() / numIntervals;
+        double NumTrial;
+        double trialAverage = 0;
+        double trialPayoff;
+        double temp = 0;
+        double simulationRunningSum, simulationAveragePayoff;
+        double stock;
+        Random r = new Random();
+        simulationRunningSum = 0.0;
+        for (countTrial = 1; countTrial <= numTrials; countTrial++) {
+            stock = o.getsNought();
+            NumTrial = 0.0;
+            double nns = 0;
+            for (i = 0; i < numIntervals; i++) {
+                nns = r.nextGaussian();
+                stock = stock * Math.exp((o.getRiskFreeRate() - o.getVolatility() * o.getVolatility() / 2) * deltaT
+                        + o.getVolatility() * nns * Math.sqrt(deltaT));
+                NumTrial += stock;
+                temp = stock;
+            }
+            if (o.getStyle() == OptionStyle.ASIAN) {
+                trialAverage = NumTrial / numIntervals;
+            } else if ((o.getStyle() == OptionStyle.AMERICAN) || (o.getStyle() == OptionStyle.EUROPEAN)) {
+                trialAverage = temp;
+            }
+            trialPayoff = Math.max(o.getStrikeP() - trialAverage, 0.0);
+            simulationRunningSum += trialPayoff;
+        }
+        simulationAveragePayoff = simulationRunningSum / numTrials;
+        double valueOfOption;
+        valueOfOption = simulationAveragePayoff * Math.exp(-o.getRiskFreeRate() * o.getTerm());
+        System.out.print(valueOfOption);
         return valueOfOption;
     }
 
@@ -122,7 +158,7 @@ public class SimulationModel extends Algorithm{
      */
 
     private double crunchCall(Option o) {
-        int i, trialCount;
+        /*int i, trialCount;
         double deltaT = o.getTerm()/(double)numIntervals;
         double trialRunningSum, trialAverage, trialPayoff;
         double simulationRunningSum, simulationAveragePayoff;
@@ -145,12 +181,49 @@ public class SimulationModel extends Algorithm{
             /*************************************
              * The only difference between calculating call and put option in simulation.
              ***************************************/
-            trialPayoff = Math.max(trialAverage - o.getStrikeP(), 0.0);
+            /*trialPayoff = Math.max(trialAverage - o.getStrikeP(), 0.0);
             simulationRunningSum += trialPayoff;
         }
         simulationAveragePayoff = simulationRunningSum / numTrials;
         double valueOfOption;
         valueOfOption = simulationAveragePayoff * Math.exp(-o.getRiskFreeRate()*o.getTerm());
+        return valueOfOption;*/
+        int i;
+        int countTrial;
+        double deltaT;
+        deltaT = o.getTerm() / numIntervals;
+        double NumTrial;
+        double trialAverage = 0;
+        double trialPayoff;
+        double temp = 0;
+        double simulationRunningSum, simulationAveragePayoff;
+        double stock;
+        Random r = new Random();
+        simulationRunningSum = 0.0;
+        for (countTrial = 1; countTrial <= numTrials; countTrial++) {
+            stock = o.getsNought();
+            NumTrial = 0.0;
+            double nns = 0;
+            for (i = 0; i < numIntervals; i++) {
+                nns = r.nextGaussian();
+                stock = stock * Math.exp((o.getRiskFreeRate() - o.getVolatility() * o.getVolatility() / 2) * deltaT
+                        + o.getVolatility() * nns * Math.sqrt(deltaT));
+                NumTrial += stock;
+                temp = stock;
+
+            }
+            if (o.getStyle() == OptionStyle.ASIAN) {
+                trialAverage = NumTrial / numIntervals;
+            } else if ((o.getStyle() == OptionStyle.AMERICAN) || (o.getStyle() == OptionStyle.EUROPEAN)) {
+                trialAverage = temp;
+            }
+
+            trialPayoff = Math.max(trialAverage - o.getStrikeP(), 0.0);
+            simulationRunningSum += trialPayoff;
+        }
+        simulationAveragePayoff = simulationRunningSum / numTrials;
+        double valueOfOption;
+        valueOfOption = simulationAveragePayoff * Math.exp(-o.getRiskFreeRate() * o.getTerm());
         return valueOfOption;
     }
 
